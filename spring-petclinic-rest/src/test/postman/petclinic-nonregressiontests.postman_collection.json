@@ -1,0 +1,3411 @@
+{
+  "info": {
+    "_postman_id": "5fd27f12-8cfd-4cf0-81b4-26f8421f0aa4",
+    "name": "Petclinic - Non Regression Tests",
+    "description": "## 🐾 Petclinic - Non Regression Tests\n\nThis Postman collection covers functional API flows to ensure the Petclinic app remains stable during changes.\n\n### 📑 Test Scenarios\n\n1. **01 - First Visit**\n    \n    1. _Register Owner_: Registers a new pet owner.\n        \n    2. _Register Pet_: Adds a pet to that owner.\n        \n    3. _Schedule Visit_: Schedules the pet’s first visit.\n        \n2. 02 - Returning Customer\n    \n    1. Update Owner: Updates the owner registration\n        \n    2. Confirm Update: Confirming the update\n        \n    3. _Update Pet's Owner: Updates the pet's owner registration_\n        \n    4. Schedule a new Visit: Scheduling new visit\n        \n\nMore flows can be added later, like:\n\n- \"03 - Owner Edits, etc.\"\n    \n\n### 🛠 Environment Variables\n\n- `baseUrl`: URL of the running API (e.g., `http://localhost:9966/petclinic`)\n    \n- `ownerId`, `petId`: Dynamically set during test execution\n    \n\n### ▶️ Run Tests via Newman\n\n- Make sure that you have Node Js installed in your system\n    \n- Give permission to the script file with `chmod +x postman-tests.sh`\n    \n- With your application running... Run `./postman-tests.sh` in the root directory of the project or `sh postman-tests.sh` if you dont want to give permission to the script file.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29491402"
+  },
+  "item": [
+    {
+      "name": "01 - First Visit",
+      "item": [
+        {
+          "name": "Register a Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Owner created successfully\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Owner data contains a ID and firstName is equal to the expected?\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "    pm.expect(jsonData.firstName).to.eql(\"Anna Luísa\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"ownerId\", pm.response.json().id);\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"123 Brasilia Street\",\n  \"city\": \"Brasília\",\n  \"firstName\": \"Anna Luísa\",\n  \"lastName\": \"Medeiros\",\n  \"telephone\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "description": "Records the details of a new pet owner."
+          },
+          "response": [
+            {
+              "name": "The pet owner was successfully added.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"pets\": [\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    },\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    }\n  ],\n  \"telephone\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register a Pet's Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Pet created successfully\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Pet data contains a ID and OwnerId is equal to the expected?\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "    pm.expect(jsonData.ownerId).to.eql(parseInt(pm.environment.get(\"ownerId\")));\r",
+                  "    \r",
+                  "    pm.environment.set(\"petId\", jsonData.id);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2025-12-04\",\n  \"name\": \"Drax\",\n  \"type\": {\n    \"id\": \"1\",\n    \"name\": \"cat\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}",
+                "pets"
+              ]
+            },
+            "description": "Records the details of a new pet."
+          },
+          "response": [
+            {
+              "name": "The pet was successfully added.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"birthDate\": \"<date>\",\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  },\n  \"visits\": [\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"date\": \"<date>\",\n      \"petId\": \"<integer>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"date\": \"<date>\",\n      \"petId\": \"<integer>\"\n    }\n  ],\n  \"ownerId\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Pet or Owner not found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "obtener pets.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pet"
+                  ],
+                  "variable": [
+                    {
+                      "key": "petId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Schedule a Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Visit registered successfully\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Visit register contains a ID , petId is equal to the expected? Date matches to the expected?\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "    pm.expect(jsonData.petId).to.eql(parseInt(pm.environment.get(\"petId\")));\r",
+                  "    pm.expect(jsonData.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Regular checkup\",\n  \"date\": \"2025-04-12\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}/pets/{{petId}}/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}",
+                "pets",
+                "{{petId}}",
+                "visits"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Creates a visit."
+          },
+          "response": [
+            {
+              "name": "visit created successfully.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"date\": \"<date>\",\n  \"petId\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Not modified.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"date\": \"<date>\",\n  \"petId\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Visit not found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "_\"A new customer comes with her pet to schedule a first visit\"_",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Returning Customer",
+      "item": [
+        {
+          "name": "Update Owner Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Owner updated successfully\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"Valinor\",\n  \"city\": \"Eldamar\",\n  \"firstName\": \"Anna Luísa\",\n  \"lastName\": \"Medeiros Jr.\",\n  \"telephone\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}"
+              ]
+            },
+            "description": "Updates the pet owner record with the specified details."
+          },
+          "response": [
+            {
+              "name": "Update successful.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"pets\": [\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    },\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    }\n  ],\n  \"telephone\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Owner not found.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"telephone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Confirming the Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET Owner returns status 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const ownerData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Owner data is equal to first and lastName expected?\", function () {\r",
+                  "    pm.expect(ownerData.firstName).to.eql(\"Anna Luísa\");\r",
+                  "    pm.expect(ownerData.lastName).to.eql(\"Medeiros Jr.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}"
+              ]
+            },
+            "description": "Returns the pet owner or a 404 error."
+          },
+          "response": [
+            {
+              "name": "Owner details found and returned.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"pets\": [\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    },\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    }\n  ],\n  \"telephone\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Not modified.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"pets\": [\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    },\n    {\n      \"birthDate\": \"<date>\",\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"type\": {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      \"visits\": [\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"id\": \"<integer>\",\n          \"date\": \"<date>\",\n          \"petId\": \"<integer>\"\n        }\n      ],\n      \"ownerId\": \"<integer>\"\n    }\n  ],\n  \"telephone\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Owner not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update the Pet's Owner Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Pet updated successfully\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2025-11-05\",\n  \"name\": \"Draxis\",\n  \"type\": {\n    \"id\": \"1\",\n    \"name\": \"cat\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}/pets/{{petId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}",
+                "pets",
+                "{{petId}}"
+              ]
+            },
+            "description": "Updates the pet record with the specified details."
+          },
+          "response": [
+            {
+              "name": "Update successful.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets/:petId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets",
+                    ":petId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    },
+                    {
+                      "key": "petId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet."
+                    }
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets/:petId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets",
+                    ":petId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    },
+                    {
+                      "key": "petId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Pet not found for this owner.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets/:petId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets",
+                    ":petId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    },
+                    {
+                      "key": "petId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet."
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"birthDate\": \"<date>\",\n  \"name\": \"<string>\",\n  \"type\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/owners/:ownerId/pets/:petId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "owners",
+                    ":ownerId",
+                    "pets",
+                    ":petId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ownerId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet owner."
+                    },
+                    {
+                      "key": "petId",
+                      "value": "<integer>",
+                      "description": "(Required) The ID of the pet."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Schedule a New Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Visit registered successfully\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Visit register contains a ID , petId is equal to the expected? Date matches to the expected?\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "    pm.expect(jsonData.petId).to.eql(parseInt(pm.environment.get(\"petId\")));\r",
+                  "    pm.expect(jsonData.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Regular checkup\",\n  \"date\": \"2025-10-02\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{ownerId}}/pets/{{petId}}/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{ownerId}}",
+                "pets",
+                "{{petId}}",
+                "visits"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Creates a visit."
+          },
+          "response": [
+            {
+              "name": "visit created successfully.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"date\": \"<date>\",\n  \"petId\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Not modified.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"date\": \"<date>\",\n  \"petId\": \"<integer>\"\n}"
+            },
+            {
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Visit not found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            },
+            {
+              "name": "Server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"date\": \"<date>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/visits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "visits"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"<string>\",\n  \"schemaValidationErrors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ],\n  \"status\": \"<integer>\",\n  \"timestamp\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"type\": \"<uri>\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "\"Our client returns to update her pet's details and schedule a new visit.\"",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Owners CRUD complet",
+      "description": "CRUD complet d Owners amb encadenament i validacio de contracte.",
+      "item": [
+        {
+          "name": "Create CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner creat amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "const body = pm.response.json();",
+                  "pm.test('Resposta amb id numeric', function () {",
+                  "    pm.expect(body.id).to.be.a('number');",
+                  "});",
+                  "pm.environment.set('crudOwnerId', body.id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"CRUD\",\n  \"lastName\": \"Owner\",\n  \"address\": \"Carrer Major 1\",\n  \"city\": \"Vic\",\n  \"telephone\": \"6123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner consultat amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "const body = pm.response.json();",
+                  "pm.test('L id coincideix amb la variable', function () {",
+                  "    pm.expect(body.id).to.eql(Number(pm.environment.get('crudOwnerId')));",
+                  "});",
+                  "const schema = {",
+                  "    type: 'object',",
+                  "    required: ['id', 'firstName', 'lastName', 'telephone'],",
+                  "    properties: {",
+                  "        id: { type: 'integer' },",
+                  "        firstName: { type: 'string' },",
+                  "        lastName: { type: 'string' },",
+                  "        telephone: { type: 'string' }",
+                  "    }",
+                  "};",
+                  "pm.test('Contrato JSON del owner', function () {",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{crudOwnerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{crudOwnerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner actualitzat amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{crudOwnerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{crudOwnerId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"CRUD Updated\",\n  \"lastName\": \"Owner\",\n  \"address\": \"Carrer Nou 2\",\n  \"city\": \"Barcelona\",\n  \"telephone\": \"6123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Owner after update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner actualitzat consultat amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Es conserva el canvi', function () {",
+                  "    pm.expect(body.firstName).to.eql('CRUD Updated');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{crudOwnerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{crudOwnerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner eliminat amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{crudOwnerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{crudOwnerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Owner after delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner eliminat retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{crudOwnerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{crudOwnerId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Pets CRUD complet",
+      "description": "CRUD complet de Pets relacionat amb un owner creat durant la carpeta.",
+      "item": [
+        {
+          "name": "Create Pet CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner de Pets creat amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.environment.set('petCrudOwnerId', body.id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Pet\",\n  \"lastName\": \"Owner\",\n  \"address\": \"Carrer Pet 1\",\n  \"city\": \"Vic\",\n  \"telephone\": \"6123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create CRUD Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet creat amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Pet relacionat amb l owner', function () {",
+                  "    pm.expect(body.ownerId).to.eql(Number(pm.environment.get('petCrudOwnerId')));",
+                  "});",
+                  "pm.environment.set('petCrudId', body.id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{petCrudOwnerId}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{petCrudOwnerId}}",
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2020-01-01\",\n  \"name\": \"Rex CRUD\",\n  \"type\": {\n    \"id\": 2,\n    \"name\": \"dog\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet consultat amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "const body = pm.response.json();",
+                  "pm.test('El pet te id numeric', function () {",
+                  "    pm.expect(body.id).to.be.a('number');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pets",
+                "{{petCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update CRUD Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet actualitzat amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pets",
+                "{{petCrudId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2020-01-01\",\n  \"name\": \"Rex Updated\",\n  \"type\": {\n    \"id\": 2,\n    \"name\": \"dog\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Pet after update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet actualitzat consultat amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Es conserva el nom modificat', function () {",
+                  "    pm.expect(body.name).to.eql('Rex Updated');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pets",
+                "{{petCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete CRUD Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet eliminat amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pets",
+                "{{petCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Pet after delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet eliminat retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pets",
+                "{{petCrudId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Vets",
+      "description": "Consultes de veterinaris.",
+      "item": [
+        {
+          "name": "List Vets",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Llista de vets retorna 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "const body = pm.response.json();",
+                  "pm.test('La resposta es un array', function () {",
+                  "    pm.expect(body).to.be.an('array');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/vets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "vets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Vet detail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Detall del vet retorna 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "const body = pm.response.json();",
+                  "pm.test('El vet te id numeric', function () {",
+                  "    pm.expect(body.id).to.be.a('number');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/vets/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "vets",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Negative cases",
+      "description": "Casos negatius basats en el comportament real de l API.",
+      "item": [
+        {
+          "name": "Owner without firstName",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner sense firstName retorna 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lastName\": \"Invalid\",\n  \"address\": \"Carrer X\",\n  \"city\": \"Vic\",\n  \"telephone\": \"6123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get non-existing Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner inexistent retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "999999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Pet with non-existing Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner inexistent retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/999999/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "999999",
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2020-01-01\",\n  \"name\": \"Invalid Pet\",\n  \"type\": {\n    \"id\": 2,\n    \"name\": \"dog\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Visit with non-existing Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet inexistent retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/1/pets/999999/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "1",
+                "pets",
+                "999999",
+                "visits"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Invalid visit\",\n  \"date\": \"2025-01-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Visits CRUD complet",
+      "description": "Operacions disponibles de Visits amb dades creades durant el flux.",
+      "item": [
+        {
+          "name": "Create Visit CRUD Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Owner de Visits creat amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.environment.set('visitCrudOwnerId', pm.response.json().id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Visit\",\n  \"lastName\": \"Owner\",\n  \"address\": \"Carrer Visit 1\",\n  \"city\": \"Vic\",\n  \"telephone\": \"6123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Visit CRUD Pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Pet de Visits creat amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.environment.set('visitCrudPetId', pm.response.json().id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{visitCrudOwnerId}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{visitCrudOwnerId}}",
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"birthDate\": \"2020-01-01\",\n  \"name\": \"Visit Pet\",\n  \"type\": {\n    \"id\": 2,\n    \"name\": \"dog\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Visits",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Llista de Visits retorna 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "pm.test('La resposta es un array', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create CRUD Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit creada amb 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('La Visit queda relacionada amb el Pet', function () {",
+                  "    pm.expect(body.petId).to.eql(Number(pm.environment.get('visitCrudPetId')));",
+                  "});",
+                  "pm.environment.set('visitCrudId', body.id);",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners/{{visitCrudOwnerId}}/pets/{{visitCrudPetId}}/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners",
+                "{{visitCrudOwnerId}}",
+                "pets",
+                "{{visitCrudPetId}}",
+                "visits"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Initial checkup\",\n  \"date\": \"2025-01-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit consultada amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.response.to.be.json;",
+                  "pm.test('La Visit te id numeric', function () {",
+                  "    pm.expect(pm.response.json().id).to.be.a('number');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update CRUD Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit actualitzada amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitCrudId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated checkup\",\n  \"date\": \"2025-02-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Visit after update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit actualitzada consultada amb 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "const body = pm.response.json();",
+                  "pm.test('Es conserva la descripcio modificada', function () {",
+                  "    pm.expect(body.description).to.eql('Updated checkup');",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete CRUD Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit eliminada amb 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitCrudId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get CRUD Visit after delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test('Visit eliminada retorna 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Tiempo de respuesta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitCrudId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitCrudId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Data-driven",
+      "description": "La peticio utilitza pm.iterationData i es pot executar amb un CSV del Runner.",
+      "item": [
+        {
+          "name": "Create Owner with Runner data",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.variables.set('runnerFirstName', pm.iterationData.has('firstName') ? pm.iterationData.get('firstName') : 'Runner Default');",
+                  "pm.variables.set('runnerLastName', pm.iterationData.has('lastName') ? pm.iterationData.get('lastName') : 'Owner');",
+                  "pm.variables.set('runnerAddress', pm.iterationData.has('address') ? pm.iterationData.get('address') : 'Carrer Runner 1');",
+                  "pm.variables.set('runnerCity', pm.iterationData.has('city') ? pm.iterationData.get('city') : 'Vic');",
+                  "pm.variables.set('runnerTelephone', pm.iterationData.has('telephone') ? pm.iterationData.get('telephone') : '6123456789');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "const expectedStatus = Number(pm.iterationData.get('expectedStatus') || 201);",
+                  "pm.test('Status esperat per la iteracio', function () {",
+                  "    pm.expect(pm.response.code).to.eql(expectedStatus);",
+                  "});",
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('runnerOwnerId', pm.response.json().id);",
+                  "}",
+                  "pm.test('Temps de resposta inferior a 2000 ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/owners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "owners"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"{{runnerFirstName}}\",\n  \"lastName\": \"{{runnerLastName}}\",\n  \"address\": \"{{runnerAddress}}\",\n  \"city\": \"{{runnerCity}}\",\n  \"telephone\": \"{{runnerTelephone}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:9966/petclinic"
+    },
+    {
+      "key": "ownerId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "petId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

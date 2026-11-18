@@ -1,0 +1,6 @@
+firstName,lastName,address,city,telephone,statusEsperado
+Ayoube,Serra,Carrer Major 1,Vic,6345678901,201
+Joan,Perez,Carrer Nou 2,Barcelona,6345678901,201
+Carles,Garcia,Carrer de la llibertat 3,Vic,6345678901,201
+,Garcia,Carrer Invalid 3,Vic,6345678901,400
+Seiki,,Carrer Sobirà 6,Ceuta,6345678901,400
